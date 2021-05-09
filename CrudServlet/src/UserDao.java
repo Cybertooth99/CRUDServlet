@@ -76,6 +76,23 @@ public class UserDao {
 		
 		return status;
 	}
+	public static int saveUser(User e){
+		int status=0;
+		try{
+			Connection con=UserDao.getConnection();
+			PreparedStatement ps=con.prepareStatement("insert into login(email,pass,acc_type) values (?,?,?)");
+			
+			ps.setString(1,e.getUsername());
+			ps.setString(2,e.getPassword());
+			ps.setString(3,e.getAcctype());
+
+			status=ps.executeUpdate();
+			
+			con.close();
+		}catch(Exception ex){ex.printStackTrace();}
+		
+		return status;
+	}
 	public static int update(User e){
 		int status=0;
 		try{
@@ -144,6 +161,75 @@ public class UserDao {
 				e.setAuthlname(rs.getString(4));
 				e.setShelfid(rs.getString(5));
 				e.setQantity(rs.getInt(6));
+				list.add(e);
+			}
+			con.close();
+		}catch(Exception e){e.printStackTrace();}
+		
+		return list;
+	}
+	public static int deleteUser(int id) {
+		int status=0;
+		try{
+			Connection con=UserDao.getConnection();
+			PreparedStatement ps=con.prepareStatement("delete from login where user_id=?");
+			ps.setInt(1,id);
+			status=ps.executeUpdate();
+			
+			con.close();
+		}catch(Exception e){e.printStackTrace();}
+		
+		return status;
+		
+	}
+	public static User getUserById(int id) {
+		User e=new User();
+		
+		try{
+			Connection con=UserDao.getConnection();
+			PreparedStatement ps=con.prepareStatement("select * from login where user_id=?");
+			ps.setInt(1,id);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()){
+				e.setUserid(rs.getInt(1));
+				e.setUsername(rs.getString(2));
+				e.setPassword(rs.getString(3));
+				e.setAcctype(rs.getString(4));
+			}
+			con.close();
+		}catch(Exception ex){ex.printStackTrace();}
+		
+		return e;
+	}
+	public static int updateUser(User e) {
+		int status=0;
+		try{
+			Connection con=UserDao.getConnection();
+			PreparedStatement ps=con.prepareStatement("update login set email=?,pass=?,acc_type=? where user_id=?");
+
+			ps.setString(1,e.getUsername());
+			ps.setString(2,e.getPassword());
+			ps.setString(3,e.getAcctype());
+			status=ps.executeUpdate();
+			
+			con.close();
+		}catch(Exception ex){ex.printStackTrace();}
+		
+		return status;
+	}
+	public static List<User> getAllUsers() {
+		List<User> list=new ArrayList<User>();
+		
+		try{
+			Connection con=UserDao.getConnection();
+			PreparedStatement ps=con.prepareStatement("select * from login");
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				User e=new User();
+				e.setUserid(rs.getInt(1));
+				e.setUsername(rs.getString(2));
+				e.setPassword(rs.getString(3));
+				e.setAcctype(rs.getString(4));
 				list.add(e);
 			}
 			con.close();

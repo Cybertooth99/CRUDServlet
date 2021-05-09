@@ -24,9 +24,9 @@ public class ViewServlet extends HttpServlet {
 		for(User e:list){
 			out.print("<tr><td>"+e.getBookid()+"</td><td>"+e.getBookname()+"</td><td>"+e.getAuthfname()+"</td><td>"+e.getAuthfname()+
 					"</td><td>"+e.getShelfid()+"</td><td>"+e.getQantity()+"</td><td><a href='EditServlet?id="+e.getBookid()+
-					"'>edit</a></td><td><a href='DeleteServlet?id="+e.getBookid()+"'>delete</a></td></tr>");
+					"'>Edit</a></td><td><a href='DeleteServlet?id="+e.getBookid()+"'>Delete</a></td></tr>");
 		}
-		out.print("</table><br/><br/><a href=\"home.html\">Home</a></center></body></html>");
+		out.print("</table><br/><br/><a href=\"book_home.html\">Back</a></center></body></html>");
 		
 		out.close();
 	}
